@@ -1,4 +1,13 @@
 .Content {
-  margin: 0 auto;
-  width: 90%
+  width: 100%;
+  height: 100%;
+}
+
+.Add {
+  padding: 10px;
+  margin-right: 20px;
+}
+
+div.Dropdown {
+  margin: 30px
 }
