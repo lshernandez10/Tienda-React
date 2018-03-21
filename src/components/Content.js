@@ -1,7 +1,7 @@
 //Dependencies
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Col, Row, Button, InputNumber } from 'antd';
+import { Card, Col, Row, Button, InputNumber, message } from 'antd';
 
 import DropdownOrderBy from './DropdownOrderBy.js';
 import DropdownAvailability from './DropdownAvailability.js';
@@ -136,14 +136,17 @@ class Content extends Component {
 
   alCarrito = (id) => {
     this.props.carCallback(id, this.state.quantity);
-  };
+    message.success('El producto se añadió al carrito');
+    this.setState({
+      quantity: 1
+    });
+  }
 
   onChange = (value) => {
     this.setState({
       quantity: value
     });
-
-};
+  }
 
 componentWillReceiveProps = (nextProps) => {
   const id = nextProps.levelsId;
@@ -188,7 +191,8 @@ componentWillReceiveProps = (nextProps) => {
 
     return (
       <div className="Content">
-        { Number.isInteger(id) &&
+        {
+          Number.isInteger(id) &&
           <div className="SearchFilter">
             <Row type="flex" justify="start">
               <Col className="gutter-row" span={4}>
@@ -205,7 +209,6 @@ componentWillReceiveProps = (nextProps) => {
               </Col>
             </Row>
           </div>
-
         }
         <div style={{ background: '#FFFFFF', padding: '30px' }}>
           <Row gutter={16}>
@@ -217,12 +220,11 @@ componentWillReceiveProps = (nextProps) => {
                     <Card title={product.name}>
                       <p>Precio= {product.price}</p>
                       <p>Cantidad= {product.quantity}</p>
-                      <Button className="Add" type="primary" icon="check" size="default" onClick={(id) => this.alCarrito(product.id, id)}>Añadir al Carrito</Button>
-                      <InputNumber min={1} defaultValue={1} onChange={this.onChange}/>
+                      <Button className="Add" type="primary" icon="check" size="small" onClick={(id) => this.alCarrito(product.id, id)}>Añadir al Carrito</Button>
+                      <InputNumber min={1} defaultValue={1} size="small" onChange={this.onChange}/>
                     </Card>
                   </Col>
                 )
-
             }
           </Row>
         </div>

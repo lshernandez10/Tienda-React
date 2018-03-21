@@ -4,11 +4,11 @@ import { Popover, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
 import products from '../data/products.json';
+import { Popconfirm } from 'antd';
 
 
 //Assets
 import './css/Header.css';
-
 
 class MyHeader extends Component {
 
@@ -16,8 +16,9 @@ class MyHeader extends Component {
     super(props);
 
     this.state = {
-      visible: false,
-      dataSource: []
+      visible: false, //Popover visibility
+      dataSource: [], //Array with the items in the cart
+      total: 0 // Total amount to pay
     }
 
   };
@@ -27,12 +28,14 @@ class MyHeader extends Component {
     quantity: PropTypes.number
   };
 
-
+  // Hide the popover
   hide = () => {
     this.setState({
       visible: false,
     });
   }
+
+  //
   handleVisibleChange = (visible) => {
     this.setState({ visible });
   }
@@ -41,18 +44,20 @@ class MyHeader extends Component {
     const id = nextProps.itemId;
     const quantity = nextProps.quantity;
 
-    if (id !== null && quantity !== null){
+    if (id !== null && quantity !== null){ // If the props were set
       const item = products.find( product => product.id === id );
       const dataSource = this.state.dataSource;
-
       var repeated = false;
-      for (const x of dataSource) {
+
+      //If the item is alredy in the cart, just increase the amount
+      const price = Number.parseInt(item.price.substring(1).replace(",", ""), 10);
+      for (const x of dataSource){
         if (x.key == id) {
-          x.quantity= x.quantity + quantity;
+          x.quantity = x.quantity + quantity;
           repeated = true;
-          this.setState({
-            dataSource: dataSource,
-          });
+          this.setState((prevState) => ({
+            total: prevState.total + price*quantity
+          }));
           break;
         }
       }
@@ -65,13 +70,29 @@ class MyHeader extends Component {
           quantity: quantity,
         };
 
-        this.setState({
+        this.setState((prevState) => ({
           dataSource: [...dataSource, newData],
-        });
+          total: prevState.total + price*quantity
+        }));
       }
     }
+  } // componentWillReceiveProps
 
+  comprar = () => {
+    this.setState({
+      total: 0,
+      dataSource: []
+    });
   }
+
+  cancel = (x) => {
+      console.log("Cancelarr", x);
+  }
+
+  confirm = (x) => {
+      console.log("Confirmar", x);
+  }
+
 
   render() {
     const id = this.props;
@@ -80,7 +101,11 @@ class MyHeader extends Component {
       { title: 'Nombre Producto', dataIndex: 'name', key: 'name' },
       { title: 'Precio', dataIndex: 'price', key: 'price' },
       { title: 'Cantidad', dataIndex: 'quantity', key: 'quantity' },
-      { dataIndex: '', key: 'x', render: () => <a href="#">Delete</a> },
+      { dataIndex: '', key: 'x', render: () => (
+        <Popconfirm title="Desea eliminar el item del carrito?" onConfirm={this.confirm} onCancel={this.cancel} okText="Si" cancelText="No">
+          <a href="#">Delete</a>
+        </Popconfirm>
+      ) },
     ];
 
     const content = (
@@ -93,25 +118,23 @@ class MyHeader extends Component {
         </div>
         <br />
         <div>
-          <p>Total a pagar:</p>
-          <Button type="primary" size="large" >Comprar</Button>
+          <p>Total a pagar: ${this.state.total}</p>
+          <Button type="primary" size="large" onClick={this.comprar}>Comprar</Button>
         </div>
       </div>
     );
 
     return(
-      <div className="Header">
-        <div className="CartButton">
-          <Popover
-                  title="Tu Orden"
-                  trigger="click"
-                  content={content}
-                  visible={this.state.visible}
-                  onVisibleChange={this.handleVisibleChange}
-                >
-                <Button type="primary" shape="circle" icon="shopping-cart" size="large" />
-          </Popover>
-        </div>
+      <div className="CartButton">
+        <Popover
+                title="Tu Orden"
+                trigger="click"
+                content={content}
+                visible={this.state.visible}
+                onVisibleChange={this.handleVisibleChange}
+              >
+              <Button type="primary" shape="circle" icon="shopping-cart" size="large" />
+        </Popover>
       </div>
     );
   }
