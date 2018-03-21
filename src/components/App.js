@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Layout } from 'antd';
 
 //Assets
-import './css/Footer.css';
+import './css/App.css';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -45,10 +45,12 @@ class App extends Component {
               breakpoint="lg"
               collapsedWidth="0"
               onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
+              width={250}
+              style={{ background: '#fff', textAlign: 'left'}}
             ><SideBar callbackFromParent={this.siderCallback}/></Sider>
             <Content><MyContent levelsId={ Number.parseInt(this.state.levelId, 10)} carCallback={this.cartCallback}/></Content>
           </Layout>
-          <Footer className="Footer">Tiendas "El Baratón" ©2018 Created by Sofía</Footer>
+          <Footer >Tiendas "El Baratón" ©2018 Created by Sofía</Footer>
         </Layout>
       </div>
     );

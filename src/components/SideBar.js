@@ -17,6 +17,7 @@ class SideBar extends Component {
 
   onOpenChange = (openKeys) => {
     const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+    this.props.callbackFromParent(latestOpenKey);
 
     this.setState({
       openKeys: openKeys
@@ -48,7 +49,19 @@ class SideBar extends Component {
                   <SubMenu key={subLevel.id} title={subLevel.name}>
                   {
                     subLevel.sublevels.map((subSubLevel) =>
-                      <Menu.Item key={subSubLevel.id}>{subSubLevel.name}</Menu.Item>
+
+                      subSubLevel.sublevels !== undefined? ( // If the sublevel has more sublevels
+                        <SubMenu key={subSubLevel.id} title={subSubLevel.name}>
+                        {
+                          subSubLevel.sublevels.map((sub3Level) =>
+                            <Menu.Item key={sub3Level.id}>{sub3Level.name}</Menu.Item>
+                          )
+                        }
+                        </SubMenu>
+                      ):( // else
+                        <Menu.Item key={subSubLevel.id}>{subSubLevel.name}</Menu.Item>
+                      )
+
                     )
                   }
                   </SubMenu>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, Button, Icon, message } from 'antd';
 
+import './css/Button.css';
 
 class DropdownOrderBy extends Component {
 
@@ -12,12 +13,9 @@ class DropdownOrderBy extends Component {
 
   render() {
 
-
-
     const menu = (
       <Menu
         onClick	={this.onSelectedItem}
-        style={{ width: 256 }}
       >
         <Menu.Item key="1">Precio</Menu.Item>
         <Menu.Item key="2">Cantidad</Menu.Item>
@@ -25,10 +23,10 @@ class DropdownOrderBy extends Component {
     );
 
     return(
-      <div className="Dropdown">
+      <div >
         <div>
           <Dropdown overlay={menu}>
-            <Button style={{ marginLeft: 8 }}>
+            <Button ghost className="DropdownButton" type="primary">
               Ordernar por <Icon type="down" />
             </Button>
           </Dropdown>

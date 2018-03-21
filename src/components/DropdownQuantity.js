@@ -4,6 +4,7 @@ import { Slider } from 'antd';
 import PropTypes from 'prop-types';
 import { Menu, Dropdown, Button, Icon, message } from 'antd';
 
+import './css/Button.css';
 
 class DropdownQuantity extends Component {
 
@@ -43,7 +44,7 @@ class DropdownQuantity extends Component {
     return(
       <div className="DropdownPrice">
         <Dropdown overlay={menu}>
-          <Button style={{ marginLeft: 8 }}>
+          <Button ghost className="DropdownButton" type="primary">
             Cantidad <Icon type="down" />
           </Button>
         </Dropdown>

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, Button, Icon, message, Checkbox } from 'antd';
 
+import './css/Button.css';
 
 
 class Availability extends Component {
@@ -15,17 +16,20 @@ class Availability extends Component {
   render(){
 
     const menu = (
-      <Menu style={{ width: '250px'}} >
+      <Menu >
         <Menu.Item key="1">
           <Checkbox defaultChecked onChange={(key) => this.onChange(1, key)}>Disponible</Checkbox>
+        </Menu.Item>
+        <Menu.Item key="2">
           <Checkbox defaultChecked onChange={(key) => this.onChange(0, key)}>No Disponible</Checkbox>
         </Menu.Item>
+
       </Menu>
     );
     return(
       <div className="DropdownPrice">
         <Dropdown overlay={menu}>
-          <Button style={{ marginLeft: 8 }}>
+          <Button ghost className="DropdownButton" type="primary">
             Disponibilidad <Icon type="down" />
           </Button>
         </Dropdown>

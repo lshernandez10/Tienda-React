@@ -188,16 +188,26 @@ componentWillReceiveProps = (nextProps) => {
 
     return (
       <div className="Content">
-        { Number.isInteger(id) ? (
-          <div>
-            <DropdownOrderBy callbackOrder={this.orderCallback} />
-            <DropdownPrice minPrice={this.state.minPrice} maxPrice={this.state.maxPrice} callbackPrice={this.priceCallback} />
-            <DropdownQuantity minQuantity={this.state.minQuantity} maxQuantity={this.state.maxQuantity} callbackQuantity={this.quantityCallback} />
-            <DropdownAvailability callbackAvailability={this.availabilityCallback} />
+        { Number.isInteger(id) &&
+          <div className="SearchFilter">
+            <Row type="flex" justify="start">
+              <Col className="gutter-row" span={4}>
+                <DropdownOrderBy callbackOrder={this.orderCallback} />
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <DropdownAvailability callbackAvailability={this.availabilityCallback} />
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <DropdownPrice minPrice={this.state.minPrice} maxPrice={this.state.maxPrice} callbackPrice={this.priceCallback} />
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <DropdownQuantity minQuantity={this.state.minQuantity} maxQuantity={this.state.maxQuantity} callbackQuantity={this.quantityCallback} />
+              </Col>
+            </Row>
           </div>
 
-        ) : null }
-        <div style={{ background: '#ECECEC', padding: '30px' }}>
+        }
+        <div style={{ background: '#FFFFFF', padding: '30px' }}>
           <Row gutter={16}>
             {
               !id.isNaN && this.state.list != null &&
